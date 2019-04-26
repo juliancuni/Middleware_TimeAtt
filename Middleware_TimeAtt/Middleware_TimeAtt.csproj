@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Helpers\ConfReader.cs" />
     <Compile Include="Helpers\Logger.cs" />
+    <Compile Include="Helpers\SendMail.cs" />
     <Compile Include="Model\KomandaModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
