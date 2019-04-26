@@ -52,8 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ConfReader.cs" />
+    <Compile Include="Helpers\HttpCallApi.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\SendMail.cs" />
+    <Compile Include="Helpers\ZKTechoSDK.cs" />
     <Compile Include="Model\AccessToken.cs" />
     <Compile Include="Model\KomandaModel.cs" />
     <Compile Include="Model\Perdoruesi.cs" />
