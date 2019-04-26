@@ -100,7 +100,6 @@ namespace Middleware_TimeAtt
                     {
                         Logger.WriteLog("Error: Formati i komandes nga WEBCLIENT. " + nsex.Message);
                     }
-                    Console.WriteLine(data);
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes("sukses"); ;
                     m_clientSocket.Send(msg);
                     m_stopClient = true;
