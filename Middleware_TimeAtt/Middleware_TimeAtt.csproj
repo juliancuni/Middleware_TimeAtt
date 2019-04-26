@@ -63,6 +63,8 @@
     <Compile Include="Model\TimeAttendances.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestClient\ApiTimeAttendances.cs" />
+    <Compile Include="RestClient\AuthApi.cs" />
     <Compile Include="TCP\TCPServer.cs" />
     <Compile Include="TCP\TCPSocketListener.cs" />
   </ItemGroup>
