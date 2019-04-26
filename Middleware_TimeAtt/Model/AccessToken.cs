@@ -40,6 +40,7 @@ namespace Middleware_TimeAtt
             try
             {
                 File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + AccessTokenFile, Token);
+                Logger.WriteLog("INFO: AccessToken file u shkrua.");
             }
             catch (Exception ex)
             {

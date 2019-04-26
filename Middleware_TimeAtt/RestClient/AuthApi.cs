@@ -17,17 +17,44 @@ namespace Middleware_TimeAtt
 
         public static void Login()
         {
-            AccessToken accessToken = AccessToken.Get();
-            if (CheckAccessToken(accessToken.userId, accessToken.id))
+            string URI = Api + LoginEndpoint;
+            Perdoruesi perdoruesi = new Perdoruesi()
             {
-                string URI = Api + LoginEndpoint;
-                Perdoruesi perdoruesi = new Perdoruesi()
-                {
-                    username = Username,
-                    password = Password
-                };
+                username = Username,
+                password = Password
+            };
 
-                string payload = JsonConvert.SerializeObject(perdoruesi);
+            string payload = JsonConvert.SerializeObject(perdoruesi);
+
+            AccessToken accessToken = AccessToken.Get();
+            if(!String.IsNullOrEmpty(accessToken.id))
+            {
+                if (CheckAccessToken(accessToken.userId, accessToken.id))
+                {
+                    
+                    string ResponseLogin = HttpCallApi.Post(URI, payload);
+
+                    var obj = JsonConvert.DeserializeObject<dynamic>(ResponseLogin);
+
+                    if (obj["error"] != null)
+                    {
+                        string errCode = obj["error"]["statusCode"];
+                        string errMsg = obj["error"]["message"];
+                        Logger.WriteLog("ERROR: " + errCode + ". " + errMsg);
+                    }
+                    else
+                    {
+                        Logger.WriteLog("Logged in. AccessToken =  " + obj["id"]);
+                        AccessToken.Set(ResponseLogin);
+                    }
+                }
+                else
+                {
+                    Logger.WriteLog("Logged in. Ska nevoje per login");
+                }
+            }
+            else
+            {
                 string ResponseLogin = HttpCallApi.Post(URI, payload);
 
                 var obj = JsonConvert.DeserializeObject<dynamic>(ResponseLogin);
@@ -44,28 +71,29 @@ namespace Middleware_TimeAtt
                     AccessToken.Set(ResponseLogin);
                 }
             }
-            else
-            {
-                Logger.WriteLog("Logged in. Ska nevoje per login");
-            }
+            
         }
 
         public static bool CheckAccessToken(string userId, string accessToken)
         {
             string URI = Api + PerdoruesEndpoint + userId + "?access_token=" + accessToken;
             string ResponseLogin = HttpCallApi.Get(URI);
-            var obj = JsonConvert.DeserializeObject<dynamic>(ResponseLogin);
-            if (obj["error"] != null)
+            try
             {
-                string errCode = obj["error"]["statusCode"];
-                string errMsg = obj["error"]["message"];
-                Logger.WriteLog("ERROR: " + errCode + ". AccessToken Expired");
-                return true;
+                var obj = JsonConvert.DeserializeObject<dynamic>(ResponseLogin);
+                if (obj["error"] != null)
+                {
+                    string errCode = obj["error"]["statusCode"];
+                    string errMsg = obj["error"]["message"];
+                    Logger.WriteLog("ERROR: " + errCode + ". AccessToken Expired");
+                    return true;
+                }
             }
-            else
+            catch (JsonReaderException jrex)
             {
-                return false;
+                Logger.WriteLog("ERROR: Response deserialization wrong format" + jrex.Message);
             }
+            return false;            
         }
 
         public void Logout()

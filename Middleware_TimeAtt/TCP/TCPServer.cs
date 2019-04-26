@@ -117,6 +117,7 @@ namespace Middleware_TimeAtt
                     Priority = ThreadPriority.Lowest
                 };
                 m_purgingThread.Start();
+                AuthApi.Login();
                 Logger.WriteLog("TCPServer Started. Listening on " + DEFAULT_SERVER + ":" + DEFAULT_PORT);
             }
         }
