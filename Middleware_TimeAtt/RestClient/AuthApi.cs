@@ -15,6 +15,7 @@ namespace Middleware_TimeAtt
         public static string Username = ConfReader.Read("apiuser");
         public static string Password = ConfReader.Read("apipass");
 
+
         public static void Login()
         {
             string URI = Api + LoginEndpoint;
@@ -78,6 +79,8 @@ namespace Middleware_TimeAtt
         {
             string URI = Api + PerdoruesEndpoint + userId + "?access_token=" + accessToken;
             string ResponseLogin = HttpCallApi.Get(URI);
+            int failApiLoginCounter = 0;
+
             try
             {
                 var obj = JsonConvert.DeserializeObject<dynamic>(ResponseLogin);
@@ -91,7 +94,16 @@ namespace Middleware_TimeAtt
             }
             catch (JsonReaderException jrex)
             {
-                Logger.WriteLog("ERROR: Response deserialization wrong format" + jrex.Message);
+                if(failApiLoginCounter >= 5)
+                {
+                    SendMail.Send("Rest Api Connection Failure", "Pas 6 tentativash per tu Login me Rest Api Server, TimeATT service deshtoi te lidhet.\nJu lutem njoftoni Administratorin/Developerin\nKy email eshte derguar automatikisht nga TimeATT Service.");
+                } else
+                {
+                    Logger.WriteLog("ERROR: Rest Api Server Down");
+                    ++failApiLoginCounter;
+                    CheckAccessToken(userId, accessToken);
+                }
+                
             }
             return false;            
         }

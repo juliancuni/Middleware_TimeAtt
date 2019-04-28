@@ -10,11 +10,7 @@ namespace Middleware_TimeAtt
 {
     public class TCPServer
     {
-        //public IPAddress IpAddress { get; private set; }
-        //public int Port { get; private set; }
 
-        
-        
         TcpListener server = new TcpListener(IPAddress.Parse(ConfReader.Read("tcpserverip")), int.Parse(ConfReader.Read("tcpserverport")));
         ZKTeco_TCP_Client zktTcpClient = new ZKTeco_TCP_Client();
 
