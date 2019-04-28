@@ -328,14 +328,27 @@ namespace Middleware_TimeAtt
         //When you are enrolling your finger,this event will be triggered.
         void axCZKEM1_OnEnrollFinger(int EnrollNumber, int FingerIndex, int ActionResult, int TemplateLength)
         {
+            //Pergjigje pergjigje = new Pergjigje();
+            //pergjigje.Komanda = "New_Finger_Skanned";
+            string msg;
+
             if (ActionResult == 0)
             {
-                Logger.WriteLog("INFO: Enroll finger succeed. UserID=" + EnrollNumber + "...FingerIndex=" + FingerIndex.ToString());
+                msg = "INFO: Enroll finger succeed. UserID=" + EnrollNumber + "...FingerIndex=" + FingerIndex.ToString();
+                //pergjigje.Sukses = false;
+                //pergjigje.Mesazh = msg;
+                Logger.WriteLog(msg);
             }
             else
             {
-                Logger.WriteLog("INFO: +Enroll finger failed. Result=" + ActionResult.ToString());
+                msg = "INFO: +Enroll finger failed. Result=" + ActionResult.ToString();
+                //pergjigje.Sukses = false;
+                //pergjigje.Mesazh = msg;
+                Logger.WriteLog(msg);
             }
+            //string URI = ConfReader.Read("api") + ConfReader.Read("middlewareendpoint") + "?access_token=" + AccessToken.Get().id;
+            //string pergjigjeStringify = JsonConvert.SerializeObject(pergjigje);
+            //HttpCallApi.Post(URI, pergjigjeStringify);
             //throw new NotImplementedException();
         }
 
