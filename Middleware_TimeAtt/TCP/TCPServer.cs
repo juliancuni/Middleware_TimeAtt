@@ -16,6 +16,7 @@ namespace Middleware_TimeAtt
 
         public void StartServer()
         {
+            Logger.WriteLog("INFO: Starting Middlware Service...");
             server.Start();
             Logger.WriteLog("INFO: TCP server started");
             AuthApi.Login();
@@ -71,7 +72,7 @@ namespace Middleware_TimeAtt
 
         public void StopServer()
         {
-            Logger.WriteLog("INFO: TCP server stopped");
+            Logger.WriteLog("INFO: Middlware Service Stopped");
             //server.Stop();
         }
     }

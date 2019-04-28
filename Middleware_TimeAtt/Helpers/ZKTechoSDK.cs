@@ -394,6 +394,8 @@ namespace Middleware_TimeAtt
             if (txtUserID.Length > iPIN2Width)
             {
                 Logger.WriteLog("ERROR: User ID error! The max length is " + iPIN2Width.ToString());
+                Logger.WriteLog("INFO: Restarting Middlware Service...");
+                Environment.Exit(1);
                 return -1022;
             }
 

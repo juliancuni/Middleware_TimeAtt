@@ -26,6 +26,10 @@ namespace Middleware_TimeAtt
                 x.SetServiceName("Middleware_TimeAtt");
                 x.SetDisplayName("TimeAtt Middleware");
                 x.SetDescription("Middleware midis Backend Nodejs server dhe ZKTeco i360. TCP server per te degjuar komandat nga Nodejs, TCP client per tu lidhur me ZKTeco dhe per ti nisur komanda qe vijne nga WEBClient. Gjithashtu dhe REST Api client per te regjistruar ne databaze informacione mbi Attendances");
+                x.EnableServiceRecovery(recoveryOption =>
+                {
+                    recoveryOption.RestartService(0);
+                });
             });
 
             int exitCodeValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());
