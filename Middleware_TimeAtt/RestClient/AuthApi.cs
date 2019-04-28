@@ -14,6 +14,7 @@ namespace Middleware_TimeAtt
         public static string PerdoruesEndpoint = "api/Perdoruesit/";
         public static string Username = ConfReader.Read("apiuser");
         public static string Password = ConfReader.Read("apipass");
+        static int failApiLoginCounter = 0;
 
 
         public static void Login()
@@ -79,7 +80,6 @@ namespace Middleware_TimeAtt
         {
             string URI = Api + PerdoruesEndpoint + userId + "?access_token=" + accessToken;
             string ResponseLogin = HttpCallApi.Get(URI);
-            int failApiLoginCounter = 0;
 
             try
             {
@@ -94,16 +94,16 @@ namespace Middleware_TimeAtt
             }
             catch (JsonReaderException jrex)
             {
-                if(failApiLoginCounter >= 5)
+                if (failApiLoginCounter >= 100)
                 {
-                    SendMail.Send("Rest Api Connection Failure", "Pas 6 tentativash per tu Login me Rest Api Server, TimeATT service deshtoi te lidhet.\nJu lutem njoftoni Administratorin/Developerin\nKy email eshte derguar automatikisht nga TimeATT Service.");
-                } else
-                {
+                    SendMail.Send("Rest Api Connection Failure", "Pas 100 tentativash per tu Login me Rest Api Server, TimeATT service deshtoi te lidhet.\nJu lutem njoftoni Administratorin/Developerin\nKy email eshte derguar automatikisht nga TimeATT Service.\n" + jrex.Message);
                     Logger.WriteLog("ERROR: Rest Api Server Down");
+                }
+                else
+                {
                     ++failApiLoginCounter;
                     CheckAccessToken(userId, accessToken);
                 }
-                
             }
             return false;            
         }
