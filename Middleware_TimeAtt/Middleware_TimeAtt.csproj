@@ -67,6 +67,7 @@
     <Compile Include="RestClient\AuthApi.cs" />
     <Compile Include="TCP\TCPServer.cs" />
     <Compile Include="TCP\TCPSocketListener.cs" />
+    <Compile Include="TCP\ZKTeco_TCP_Client.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

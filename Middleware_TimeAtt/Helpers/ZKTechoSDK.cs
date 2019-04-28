@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Middleware_TimeAtt.Helpers
+namespace Middleware_TimeAtt
 {
     class ZKTechoSDK
     {

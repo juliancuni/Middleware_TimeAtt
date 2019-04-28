@@ -44,13 +44,13 @@ namespace Middleware_TimeAtt
                     }
                     else
                     {
-                        Logger.WriteLog("Logged in. AccessToken =  " + obj["id"]);
+                        Logger.WriteLog("INFO: Logged in. AccessToken =  " + obj["id"]);
                         AccessToken.Set(ResponseLogin);
                     }
                 }
                 else
                 {
-                    Logger.WriteLog("Logged in. Ska nevoje per login");
+                    Logger.WriteLog("INFO: API Logged in. AccessToken Valid");
                 }
             }
             else
@@ -67,7 +67,7 @@ namespace Middleware_TimeAtt
                 }
                 else
                 {
-                    Logger.WriteLog("Logged in. AccessToken =  " + obj["id"]);
+                    Logger.WriteLog("INFO: API Logged in. New AccessToken =  " + obj["id"]);
                     AccessToken.Set(ResponseLogin);
                 }
             }

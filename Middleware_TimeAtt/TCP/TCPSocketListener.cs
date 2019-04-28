@@ -30,6 +30,7 @@ namespace Middleware_TimeAtt
         private StreamWriter m_cfgFile = null;
         private DateTime m_lastReceiveDateTime;
         private DateTime m_currentReceiveDateTime;
+        ZKTeco_TCP_Client zktTcpClient = new ZKTeco_TCP_Client();
 
         /// <summary>
         /// Client Socket Listener Constructor.
@@ -38,6 +39,7 @@ namespace Middleware_TimeAtt
         public TCPSocketListener(Socket clientSocket)
         {
             m_clientSocket = clientSocket;
+
         }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace Middleware_TimeAtt
 
                 m_clientListenerThread.Start();
             }
+            zktTcpClient.ConnectZKTecoDevice();
         }
 
         /// <summary>
@@ -93,15 +96,40 @@ namespace Middleware_TimeAtt
                     string data = System.Text.Encoding.ASCII.GetString(byteBuffer, 0, size);
                     try
                     {
+                        byte[] msg;
                         KomandaModel komanda = JsonConvert.DeserializeObject<KomandaModel>(data);
-                        Logger.WriteLog(komanda.AttId + " " + komanda.EmerIplote + " " + komanda.Password + " " + komanda.Privilegji + " " + komanda.GishtId);
+                        Console.WriteLine(data);
+                        
+                        if (komanda.Komanda == "Skan_New_Finger")
+                        {
+
+                            zktTcpClient.HapFingerSkan(komanda.AttId, komanda.GishtId, "0");
+                            msg = System.Text.Encoding.ASCII.GetBytes("sukses");
+                        }
+                        else if (komanda.Komanda == "Reg_New_User")
+                        {
+                            zktTcpClient.RegNewUser(komanda.AttId, komanda.EmerIplote, komanda.Privilegji, komanda.Password);
+                            msg = System.Text.Encoding.ASCII.GetBytes("sukses");
+                        }
+                        else if (komanda.Komanda == "Del_User")
+                        {
+                            zktTcpClient.DelUser(1, komanda.AttId);
+                            msg = System.Text.Encoding.ASCII.GetBytes("sukses");
+                        }
+                        else
+                        {
+                            msg = System.Text.Encoding.ASCII.GetBytes("deshtim");
+                            m_clientSocket.Send(msg);
+                        }
+                        
+                        m_clientSocket.Send(msg);
+                        
+                        //Logger.WriteLog(komanda.AttId + " " + komanda.EmerIplote + " " + komanda.Password + " " + komanda.Privilegji + " " + komanda.GishtId);
                     }
                     catch (JsonReaderException nsex)
                     {
                         Logger.WriteLog("Error: Formati i komandes nga WEBCLIENT. " + nsex.Message);
                     }
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes("sukses"); ;
-                    m_clientSocket.Send(msg);
                     m_stopClient = true;
                     m_markedForDeletion = true;
                 }
