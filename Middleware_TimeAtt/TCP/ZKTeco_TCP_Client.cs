@@ -61,7 +61,6 @@ namespace Middleware_TimeAtt
 
         public void CheckEveryMinute(object source, ElapsedEventArgs e)
         {
-            Console.WriteLine("Checked");
             ConnectZKTecoDevice();
         }
 
